@@ -35,8 +35,8 @@ pipeline {
    stage('Check code coverage') {
             steps {
                 script {
-                    def token = "squ_32789bcdadb6e4337e432d6cbc100c2a1a14fde5"
-                    def sonarQubeUrl = "http://35.180.137.8:9000/api"
+                    def token = "squ_5d1bc1a43dcbd8a820bc029552a845a9f7c71165"
+                    def sonarQubeUrl = "http://54.81.19.234:9000/api"
                     def componentKey = "com.codeddecode:restaurantlisting"
                     def coverageThreshold = 80.0
 
@@ -63,8 +63,8 @@ pipeline {
       stage('Docker Build and Push') {
       steps {
           sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-          sh 'docker build -t codedecode25/restaurant-listing-service:${VERSION} .'
-          sh 'docker push codedecode25/restaurant-listing-service:${VERSION}'
+          sh 'docker build -t eskandergharbi/restaurant-listing-service:${VERSION} .'
+          sh 'docker push eskandergharbi/restaurant-listing-service:${VERSION}'
       }
     } 
 
@@ -83,7 +83,7 @@ pipeline {
          checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[ credentialsId: 'git-ssh', url: 'git@github.com:udemy-dev-withK8s-AWS-codedecode/deployment-folder.git']])
         script {
        sh '''
-          sed -i "s/image:.*/image: codedecode25\\/restaurant-listing-service:${VERSION}/" aws/restaurant-manifest.yml
+          sed -i "s/image:.*/image: eskandergharbi\\/restaurant-listing-service:${VERSION}/" aws/restaurant-manifest.yml
         '''
           sh 'git checkout master'
           sh 'git add .'
